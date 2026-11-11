@@ -1,0 +1,191 @@
+{
+	"LRT": {
+		"Settings": {
+			"noGmBehavior": {
+				"name": "When no GM is online",
+				"hint": "Rolls are only recorded while a GM is connected. Choose what happens to rolls made when no GM is online.",
+				"choices": {
+					"ignore": "Don't record",
+					"warn": "Warn, don't record"
+				}
+			},
+			"developerMode": {
+				"name": "Developer mode",
+				"hint": "Shows tools for testing the Roll Tracker, such as generating fake rolls. Not needed for normal games."
+			},
+			"showDataJournal": {
+				"name": "Show data journal",
+				"hint": "Show the hidden \"Roll Tracker Data\" journal in the Journal sidebar, for troubleshooting. Don't edit it by hand."
+			}
+		},
+		"Warnings": {
+			"notRecordedNoGm": "Roll Tracker: this roll wasn't recorded because no GM is online."
+		},
+		"DataJournalName": "Roll Tracker Data",
+		"Controls": {
+			"openTracker": "Roll Tracker",
+			"openSessions": "Session Controls"
+		},
+		"Window": {
+			"title": "Roll Tracker",
+			"heroLabel": "Hero",
+			"rangeLabel": "Range",
+			"allHeroes": "All heroes",
+			"allTime": "All time",
+			"playedBy": "played by {names}",
+			"openSheet": "Open {name}'s sheet",
+			"headlinePercent": "{percent}% successes",
+			"headlineCount": "{successes} of {total} rolls",
+			"headlineCountOne": "{successes} of {total} roll",
+			"noData": "No data",
+			"noDataHint": "No rolls have been recorded for this selection yet.",
+			"trackingPaused": "Tracking paused: new rolls aren't being recorded."
+		},
+		"DataManager": {
+			"title": "Manage roll data",
+			"menu": {
+				"name": "Manage roll data",
+				"label": "Manage roll data",
+				"hint": "Reset recorded rolls, pause tracking, and (in developer mode) generate fake rolls for testing."
+			},
+			"tabs": {
+				"reset": "Reset data",
+				"fake": "Fake data",
+				"tracking": "Tracking"
+			},
+			"reset": {
+				"intro": "Delete recorded rolls for the heroes you pick. A roll shared with other heroes (Acting Together) stays for them.",
+				"selectAll": "Select all",
+				"deletedHeroes": "Deleted heroes",
+				"keepsSessions": "Sessions are kept.",
+				"button": "Reset…",
+				"noneSelected": "Pick at least one hero to reset.",
+				"title": "Reset roll data",
+				"confirm": "Delete {count} rolls? This can't be undone.",
+				"confirmShared": "{count} shared rolls will stay for the other heroes in them.",
+				"done": "Roll data reset."
+			},
+			"tracking": {
+				"active": "Tracking is active",
+				"activeHint": "Rolls are being recorded.",
+				"paused": "Tracking is paused",
+				"pausedHint": "No rolls are recorded until you resume. Everyone sees a \"Tracking paused\" note in the Roll Tracker.",
+				"pause": "Pause tracking",
+				"resume": "Resume tracking",
+				"pausedNotice": "Roll tracking paused.",
+				"resumedNotice": "Roll tracking resumed."
+			},
+			"rollCount": "{count} rolls",
+			"noHeroes": "There are no heroes in this world yet.",
+			"fake": {
+				"intro": "Add sample rolls to test the Roll Tracker. Fake rolls use each hero's real tags and can be removed without touching real rolls.",
+				"heroes": "Heroes",
+				"rollsPerHero": "Rolls per hero",
+				"generate": "Generate",
+				"noHeroes": "Pick at least one hero first.",
+				"generated": "Generated {count} fake rolls.",
+				"existing": "Fake rolls saved: {count}",
+				"wipe": "Wipe fake rolls…",
+				"wipeTitle": "Wipe fake rolls",
+				"wipeConfirm": "Remove all {count} fake rolls? Real rolls are kept. This can't be undone.",
+				"wiped": "Fake rolls removed."
+			}
+		},
+		"Tabs": {
+			"summary": "Summary",
+			"tags": "Tags",
+			"dice": "Dice",
+			"history": "History"
+		},
+		"Outcomes": {
+			"success": "Success",
+			"snc": "Success with consequences",
+			"consequences": "Consequences"
+		},
+		"Summary": {
+			"rolls": "Rolls",
+			"averagePower": "Avg power",
+			"averageDice": "Avg dice",
+			"successStreak": "Success streak",
+			"longest": "longest {count}",
+			"outcomes": "Outcomes",
+			"favoriteTags": "Favorite tags",
+			"favoritePower": "Power",
+			"favoriteWeakness": "Weakness",
+			"favoriteRelationship": "Relationship",
+			"timesUsed": "{count}×"
+		},
+		"Dice": {
+			"recentAverage": "Average (last 10 rolls)",
+			"hotStreak": "Hot streak",
+			"coldStreak": "Cold streak",
+			"notEnough": "Not enough rolls yet",
+			"progress": "{count}/{needed}",
+			"doubleOnes": "Double 1s",
+			"doubleSixes": "Double 6s",
+			"histogramTitle": "Dice totals · {count} rolls"
+		},
+		"Tags": {
+			"topPower": "Top power tags",
+			"topWeakness": "Top weakness tags",
+			"lucky": "Lucky tags",
+			"mostBurned": "Most burned tags",
+			"topRelationship": "Top relationship tags",
+			"luckyValue": "{percent}% · {successes}/{uses}",
+			"burnedTotal": "{count} total",
+			"with": "with {name}",
+			"withWord": "with"
+		},
+		"History": {
+			"showMore": "Show {count} more",
+			"unknownHero": "Unknown hero",
+			"contributedBy": "Contributed by {name}",
+			"helpedBy": "Helped by {name}",
+			"power": "Power",
+			"dice": "Dice",
+			"total": "Total",
+			"pushed": "Pushed",
+			"pushedHint": "This roll was pushed",
+			"burned": "Burned",
+			"noTags": "No tags were used in this roll."
+		},
+		"RollTypes": {
+			"quick": "Quick",
+			"tracked": "Detailed",
+			"mitigate": "Mitigate",
+			"sacrifice": "Sacrifice"
+		},
+		"OutcomesShort": {
+			"success": "Success",
+			"snc": "SwC",
+			"consequences": "Consequences"
+		},
+		"TagTypes": {
+			"power_tag": "Power",
+			"fellowship_tag": "Fellowship",
+			"relationship_tag": "Relationship",
+			"story_tag": "Story",
+			"weakness_tag": "Weakness",
+			"status_tag": "Statuses"
+		},
+		"Sessions": {
+			"title": "Session Controls",
+			"defaultName": "Session {number}",
+			"liveLabel": "{name} (live)",
+			"between": "Between sessions",
+			"noneInProgress": "No session in progress",
+			"betweenSessions": "Current rolls are <strong>between sessions</strong>",
+			"lastSession": "Last session: {name}",
+			"noSessionsYet": "No sessions yet",
+			"inProgress": "{name} in progress",
+			"rollsRecorded": "{count} rolls recorded",
+			"rollsRecordedOne": "{count} roll recorded",
+			"start": "Start session",
+			"startTitle": "Start a session",
+			"nameLabel": "Session name",
+			"end": "End session",
+			"endTitle": "End the session",
+			"endConfirm": "End {name}? It has {count} rolls. Rolls after this are between sessions until a new session starts."
+		}
+	}
+}

@@ -1,0 +1,48 @@
+{{!-- Tags tab. All values come from `tags` (see buildTags).
+      Each list has exactly 3 entries; an empty entry shows "No data". --}}
+
+{{!-- One ranked list card. Defined once here as an "inline partial" and
+      used five times below with {{> tagList ...}}. --}}
+{{#*inline "tagList"}}
+	<div class="lrt--card">
+		<div class="lrt--card-title">
+			<span>{{localize title}}</span>
+			{{#if total}}<span class="lrt--card-total">{{total}}</span>{{/if}}
+		</div>
+		{{#each rows as |row|}}
+			<div class="lrt--rank-row">
+				<span class="lrt--rank">{{row.rank}}</span>
+				{{#unless row.empty}}
+					{{!-- ../kind: "kind" from the partial's settings below (one level up,
+					      outside this #each loop). --}}
+					<span class="lrt--chip lrt--highlight lrt--highlight-{{../kind}}" data-tooltip="{{row.name}}">{{row.name}}</span>
+					{{!-- Whose tag it is (All heroes), then for relationship tags who
+					      it's with: "◯ → ◯", or "with ◯". Portraits only here, to
+					      leave room for the tag name; hover shows who it is. --}}
+					{{#if row.owner}}
+						{{> "modules/litm-roll-tracker/templates/person.hbs" row.owner compact=true}}
+					{{/if}}
+					{{#if row.target}}
+						<span class="lrt--person-link">{{#if row.owner}}→{{else}}{{localize "LRT.Tags.withWord"}}{{/if}}</span>
+						{{> "modules/litm-roll-tracker/templates/person.hbs" row.target compact=true}}
+					{{/if}}
+					<span class="lrt--count">{{row.value}}</span>
+				{{else}}
+					<span class="lrt--chip lrt--chip-empty">{{localize "LRT.Window.noData"}}</span>
+				{{/unless}}
+			</div>
+		{{/each}}
+	</div>
+{{/inline}}
+
+<div class="lrt--tags">
+	<div class="lrt--tags-row lrt--tags-row-3">
+		{{> tagList title="LRT.Tags.topPower" rows=tags.power kind="tag"}}
+		{{> tagList title="LRT.Tags.topWeakness" rows=tags.weakness kind="weakness"}}
+		{{> tagList title="LRT.Tags.lucky" rows=tags.lucky kind="tag"}}
+	</div>
+	<div class="lrt--tags-row lrt--tags-row-2">
+		{{> tagList title="LRT.Tags.mostBurned" rows=tags.burned total=tags.burnedTotal kind="tag"}}
+		{{> tagList title="LRT.Tags.topRelationship" rows=tags.relationship kind="tag"}}
+	</div>
+</div>

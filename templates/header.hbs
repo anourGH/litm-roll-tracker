@@ -1,0 +1,28 @@
+{{!-- The top of the window: who and what range the stats are for. --}}
+<header class="lrt--header">
+	{{!-- A button (not just an image) so it also works with the keyboard.
+	      data-action="openSheet" runs #onOpenSheet in roll-tracker-app.js. --}}
+	{{#if portraitActorId}}
+		<button type="button" class="lrt--portrait-button" data-action="openSheet" data-actor-id="{{portraitActorId}}"
+			data-tooltip="{{portraitTooltip}}" aria-label="{{portraitTooltip}}">
+			<img class="lrt--portrait" src="{{portrait}}" alt="">
+		</button>
+	{{else}}
+		<img class="lrt--portrait" src="{{portrait}}" alt="">
+	{{/if}}
+
+	<div class="lrt--hero">
+		{{!-- selectOptions is a Foundry helper that writes one <option> per choice
+		      and marks the one matching `selected` as chosen. --}}
+		<select name="hero" class="lrt--hero-select" aria-label="{{localize "LRT.Window.heroLabel"}}">
+			{{selectOptions heroOptions selected=heroId}}
+		</select>
+		{{#if playedBy}}
+			<p class="lrt--played-by" data-tooltip="{{playedBy}}">{{playedBy}}</p>
+		{{/if}}
+	</div>
+
+	<select name="range" class="lrt--range-select" aria-label="{{localize "LRT.Window.rangeLabel"}}">
+		{{selectOptions rangeOptions selected=rangeId}}
+	</select>
+</header>

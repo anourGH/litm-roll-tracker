@@ -1,0 +1,9 @@
+{{!-- A person next to a tag: small round portrait plus name. Used with
+      {{> ".../person.hbs" someActor}}, where someActor is { img, name, tooltip }
+      (see describeActor). The name shrinks to "…" first, so the portrait
+      always shows; the tooltip gives the full text.
+      Add compact=true to show the portrait only (name on hover). --}}
+<span class="lrt--person {{#if compact}}lrt--person-compact{{/if}}" data-tooltip="{{tooltip}}">
+	<img src="{{img}}" alt="">
+	<span class="lrt--person-name">{{name}}</span>
+</span>

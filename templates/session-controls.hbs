@@ -1,0 +1,20 @@
+{{!-- Session Controls: either the live session with an End button, or
+      "between sessions" with a Start button. --}}
+<div class="lrt--sessions">
+	{{#if live}}
+		<p class="lrt--sessions-title" data-tooltip="{{live.title}}">{{live.title}}</p>
+		<p class="lrt--sessions-detail">{{live.rolls}}</p>
+		<button type="button" class="lrt--button-danger" data-action="end">
+			<i class="fa-solid fa-stop" aria-hidden="true"></i> {{localize "LRT.Sessions.end"}}
+		</button>
+	{{else}}
+		<p class="lrt--sessions-title">{{localize "LRT.Sessions.noneInProgress"}}</p>
+		{{!-- {{{ }}} (three braces) inserts HTML as-is, so the <strong> in
+		      the text is shown bold. Only safe for our own lang text. --}}
+		<p class="lrt--sessions-detail">{{{localize "LRT.Sessions.betweenSessions"}}}</p>
+		<p class="lrt--sessions-detail" data-tooltip="{{lastSession}}">{{lastSession}}</p>
+		<button type="button" data-action="start">
+			<i class="fa-solid fa-play" aria-hidden="true"></i> {{localize "LRT.Sessions.start"}}
+		</button>
+	{{/if}}
+</div>

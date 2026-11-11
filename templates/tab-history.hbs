@@ -1,0 +1,72 @@
+{{!-- History tab. All values come from `history` (see buildHistory). --}}
+<ol class="lrt--history">
+	{{#each history.rows as |row|}}
+		<li class="lrt--history-row {{#if row.expanded}}lrt--expanded{{/if}}" data-roll-id="{{row.id}}">
+			{{!-- The summary line is a button: clicking it (or Enter on the
+			      keyboard) runs #onToggleRoll, which shows or hides the details. --}}
+			<button type="button" class="lrt--history-line" data-action="toggleRoll"
+				aria-expanded="{{#if row.expanded}}true{{else}}false{{/if}}">
+				<img class="lrt--history-portrait" src="{{row.img}}" alt="">
+				<span class="lrt--history-who">
+					<span class="lrt--history-name" data-tooltip="{{row.name}}">{{row.name}}</span>
+					{{!-- Heroes who contributed a tag: "+" and their portraits. --}}
+					{{#if row.helpers.length}}
+						<span class="lrt--history-helpers">
+							<span class="lrt--history-plus" aria-hidden="true">+</span>
+							{{#each row.helpers as |helper|}}
+								<img class="lrt--tag-helper" src="{{helper.img}}" alt="{{helper.tooltip}}" data-tooltip="{{helper.tooltip}}">
+							{{/each}}
+						</span>
+					{{/if}}
+				</span>
+				<span class="lrt--history-type">{{row.type}}</span>
+				<span class="lrt--history-power" data-tooltip="{{localize "LRT.History.power"}}">
+					<i class="fa-solid fa-bolt" aria-hidden="true"></i> {{row.power}}
+				</span>
+				<span class="lrt--history-outcome" data-tooltip="{{row.outcome.fullLabel}}">
+					<img class="lrt--outcome-icon" src="{{row.outcome.icon}}" alt="">
+					<i class="{{row.outcome.fallbackIcon}} lrt--outcome-fallback lrt--text-{{row.outcome.key}}" aria-hidden="true" hidden></i>
+					{{row.outcome.label}}
+				</span>
+				<span class="lrt--history-session" data-tooltip="{{row.session}}">{{row.session}}</span>
+				<span class="lrt--history-pushed">
+					{{#if row.pushed}}
+						<span class="lrt--badge" data-tooltip="{{localize "LRT.History.pushedHint"}}">{{localize "LRT.History.pushed"}}</span>
+					{{/if}}
+				</span>
+				<i class="fa-solid fa-chevron-down lrt--history-chevron" aria-hidden="true"></i>
+			</button>
+
+			{{!-- The details, hidden by CSS until the row is expanded. --}}
+			<div class="lrt--history-details">
+				<p class="lrt--history-dice">
+					<strong>{{localize "LRT.History.dice"}}</strong> {{row.dice}} = {{row.diceTotal}}
+					· <strong>{{localize "LRT.History.power"}}</strong> {{row.power}}
+					· <strong>{{localize "LRT.History.total"}}</strong> {{row.total}}
+				</p>
+				{{#each row.tagGroups as |group|}}
+					<div class="lrt--tag-group">
+						<span class="lrt--tag-group-label">{{localize group.label}}</span>
+						<span class="lrt--tag-group-tags">
+							{{#each group.tags as |tag|}}
+								<span class="lrt--tag lrt--highlight lrt--highlight-{{tag.kind}} {{#if tag.hindering}}lrt--tag-hindering{{/if}} {{#if tag.burned}}lrt--tag-burned{{/if}}">
+									{{#if tag.burned}}<i class="fa-solid fa-fire" data-tooltip="{{localize "LRT.History.burned"}}"></i>{{/if}}
+									{{tag.name}}{{#if tag.value}} {{tag.value}}{{/if}}
+									{{#if tag.helper}}
+										<img class="lrt--tag-helper" src="{{tag.helper.img}}" alt="{{tag.helper.tooltip}}" data-tooltip="{{tag.helper.tooltip}}">
+									{{/if}}
+								</span>
+							{{/each}}
+						</span>
+					</div>
+				{{else}}
+					<p class="lrt--muted">{{localize "LRT.History.noTags"}}</p>
+				{{/each}}
+			</div>
+		</li>
+	{{/each}}
+</ol>
+
+{{#if history.showMore}}
+	<button type="button" class="lrt--show-more" data-action="showMore">{{history.showMore}}</button>
+{{/if}}

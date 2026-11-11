@@ -1,0 +1,975 @@
+/* Layout for the Roll Tracker window. Look and feel (rustic style) comes later. */
+
+/* The window's content area: header on top, tabs filling the rest. */
+.lrt--roll-tracker .window-content {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+/* Header: portrait, then hero dropdown + "played by", then range dropdown. */
+.lrt--header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.lrt--portrait {
+	flex: 0 0 56px;
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid var(--color-border);
+}
+
+/* min-width: 0 lets this column shrink, so long names get cut off with "…"
+   instead of pushing the range dropdown out of the window. */
+.lrt--hero {
+	flex: 1;
+	min-width: 0;
+}
+
+.lrt--hero-select {
+	max-width: 100%;
+	font-size: var(--font-size-16);
+	font-weight: bold;
+}
+
+.lrt--played-by {
+	margin: 0.25rem 0 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	color: var(--color-text-secondary);
+}
+
+.lrt--range-select {
+	flex: 0 0 170px;
+	width: 170px;
+}
+
+/* Below the header: fills the rest of the window. */
+.lrt--body {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.lrt--headline {
+	margin: 0;
+	padding: 0.5rem;
+	text-align: center;
+	font-size: var(--font-size-18);
+	font-weight: bold;
+	border: 1px solid var(--color-border);
+	border-radius: 6px;
+}
+
+.lrt--headline-count {
+	font-size: var(--font-size-14);
+	font-weight: normal;
+	color: var(--color-text-secondary);
+}
+
+/* Each tab panel takes the remaining space and scrolls if it's too long. */
+.lrt--tab {
+	flex: 1;
+	min-height: 0;
+	overflow-y: auto;
+}
+
+.lrt--no-data {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	color: var(--color-text-secondary);
+}
+
+.lrt--no-data p {
+	margin: 0.25rem 0;
+}
+
+/* ---------- Shared pieces for the tabs ---------- */
+
+/* Outcome colours, used by the Summary bar and legend. They echo litmv2's
+   outcome icons: gold for success, deep purple for consequences. Success
+   with consequences is the halfway mix of the two ("in srgb" blends the
+   red, green and blue values evenly, giving a warm brown). */
+.lrt--roll-tracker {
+	--lrt-success: #d29641;
+	--lrt-consequences: #3d315d;
+	--lrt-snc: color-mix(in srgb, var(--lrt-success), var(--lrt-consequences));
+}
+
+.lrt--section-label,
+.lrt--tile-label,
+.lrt--favorite-kind {
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+}
+
+/* A small box holding one number. */
+.lrt--tile {
+	min-width: 0;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid var(--color-border);
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+}
+
+.lrt--tile-value {
+	font-size: var(--font-size-18);
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.lrt--tile-extra,
+.lrt--tile-muted {
+	font-size: var(--font-size-12);
+	font-weight: normal;
+	color: var(--color-text-secondary);
+}
+
+/* A tag name in a box. Long names end in "…"; the tooltip shows all of it. */
+.lrt--chip {
+	flex: 1;
+	min-width: 0;
+	padding: 0 0.4rem;
+	border: 1px solid var(--color-border);
+	border-radius: 4px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.lrt--chip-empty {
+	border-style: dashed;
+	color: var(--color-text-secondary);
+}
+
+.lrt--count {
+	white-space: nowrap;
+	color: var(--color-text-secondary);
+}
+
+/* ---------- Summary tab ---------- */
+
+.lrt--summary,
+.lrt--dice {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding-top: 0.5rem;
+}
+
+/* minmax(0, 1fr): four equal columns that may shrink below their content. */
+.lrt--tiles {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 0.5rem;
+}
+
+.lrt--summary-lower {
+	flex: 1;
+	display: grid;
+	grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+	gap: 1rem;
+}
+
+.lrt--outcome-bar {
+	display: flex;
+	height: 16px;
+	margin: 0.4rem 0 0.5rem;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.lrt--outcome-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.1rem 0;
+}
+
+.lrt--outcome-name {
+	flex: 1;
+	min-width: 0;
+}
+
+.lrt--outcome-percent {
+	min-width: 2.5rem;
+	text-align: right;
+	color: var(--color-text-secondary);
+}
+
+.lrt--swatch {
+	flex: 0 0 10px;
+	height: 10px;
+	border-radius: 2px;
+}
+
+.lrt--outcome-success { background: var(--lrt-success); }
+.lrt--outcome-snc { background: var(--lrt-snc); }
+.lrt--outcome-consequences { background: var(--lrt-consequences); }
+
+.lrt--favorites {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.lrt--favorite {
+	padding: 0.3rem 0.6rem;
+	border: 1px solid var(--color-border);
+	border-radius: 6px;
+}
+
+.lrt--favorite-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+/* ---------- Dice tab ---------- */
+
+.lrt--dice-cards {
+	display: grid;
+	grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+	gap: 0.5rem;
+}
+
+.lrt--badge {
+	margin-left: 0.4rem;
+	padding: 0 0.4rem;
+	border: 1px solid currentColor;
+	border-radius: 4px;
+	font-size: var(--font-size-12);
+	font-weight: normal;
+	vertical-align: middle;
+}
+
+.lrt--badge-hot { color: var(--color-level-error); }
+.lrt--badge-cold { color: var(--color-level-info, #4a90c8); }
+
+/* The histogram fills the rest of the tab. */
+.lrt--histogram {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid var(--color-border);
+	border-radius: 6px;
+}
+
+.lrt--bars {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	align-items: flex-end;
+	gap: 6px;
+	border-bottom: 1px solid var(--color-border);
+}
+
+/* Each bar is a column: count on top, filled part below. */
+.lrt--bar {
+	flex: 1;
+	min-width: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.lrt--bar-fill {
+	width: 100%;
+	background: var(--color-text-secondary);
+	border-radius: 2px 2px 0 0;
+}
+
+.lrt--bar-count {
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+	white-space: nowrap;
+}
+
+/* Big numbers (1,000 and up) get a smaller label so they fit. */
+.lrt--bars-small .lrt--bar-count {
+	/* The second value is a fallback, used if Foundry doesn't define the first. */
+	font-size: var(--font-size-10, 0.65rem);
+}
+
+.lrt--bar-axis {
+	display: flex;
+	gap: 6px;
+	padding-top: 0.2rem;
+}
+
+.lrt--bar-axis span {
+	flex: 1;
+	text-align: center;
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+}
+
+/* ---------- Tags tab ---------- */
+
+.lrt--tags {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	padding-top: 0.5rem;
+}
+
+.lrt--tags-row {
+	display: grid;
+	gap: 0.5rem;
+}
+
+.lrt--tags-row-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lrt--tags-row-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+/* A bordered box with a title, holding one ranked list. */
+.lrt--card {
+	min-width: 0;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid var(--color-border);
+	border-radius: 6px;
+}
+
+.lrt--card-title {
+	display: flex;
+	gap: 0.4rem;
+	margin-bottom: 0.3rem;
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+}
+
+.lrt--card-total {
+	margin-left: auto;
+	font-weight: bold;
+	color: var(--color-text-primary);
+}
+
+.lrt--rank-row {
+	display: flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.1rem 0;
+}
+
+.lrt--rank {
+	flex: 0 0 0.8rem;
+	font-size: var(--font-size-11, 0.7rem);
+	color: var(--color-text-secondary);
+}
+
+/* ---------- History tab ---------- */
+
+/* Outcome colours as text, for the fallback icons. */
+.lrt--text-success { color: var(--lrt-success); }
+.lrt--text-snc { color: var(--lrt-snc); }
+.lrt--text-consequences { color: var(--lrt-consequences); }
+
+.lrt--history {
+	margin: 0.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.lrt--history-row {
+	border-bottom: 1px solid var(--color-border);
+}
+
+/* The clickable summary line. Fixed column widths keep rows lined up;
+   only the name column stretches (and cuts long names with "…"). */
+.lrt--history-line {
+	display: grid;
+	grid-template-columns: 24px minmax(0, 1fr) 5.5rem 3rem 8.5rem 8rem 4rem 1rem;
+	align-items: center;
+	gap: 0.5rem;
+	width: 100%;
+	height: auto;
+	padding: 0.3rem 0.2rem;
+	border: none;
+	border-radius: 0;
+	background: none;
+	text-align: left;
+	font-weight: normal;
+}
+
+.lrt--history-line:hover {
+	background: var(--color-hover-bg, rgba(0, 0, 0, 0.08));
+}
+
+.lrt--history-portrait {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: none;
+}
+
+/* Name plus helpers: the name shrinks ("…") so the helper portraits always fit. */
+.lrt--history-who {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+	min-width: 0;
+}
+
+.lrt--history-helpers {
+	flex: 0 0 auto;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.2rem;
+}
+
+.lrt--history-plus {
+	font-weight: bold;
+	color: var(--color-text-secondary);
+}
+
+.lrt--history-name,
+.lrt--history-session,
+.lrt--history-type,
+.lrt--history-outcome {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.lrt--history-type,
+.lrt--history-session,
+.lrt--history-power {
+	color: var(--color-text-secondary);
+}
+
+.lrt--history-outcome {
+	display: flex;
+	align-items: center;
+	gap: 0.3rem;
+}
+
+.lrt--outcome-icon {
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	border: none;
+}
+
+.lrt--history-chevron {
+	color: var(--color-text-secondary);
+	transition: transform 0.15s;
+}
+
+/* Details: hidden until the row has the lrt--expanded class. */
+.lrt--history-details {
+	display: none;
+	padding: 0.2rem 0.5rem 0.5rem 2.2rem;
+}
+
+.lrt--expanded .lrt--history-details {
+	display: block;
+}
+
+.lrt--expanded .lrt--history-chevron {
+	transform: rotate(180deg);
+}
+
+.lrt--history-dice {
+	margin: 0 0 0.3rem;
+}
+
+.lrt--tag-group {
+	display: flex;
+	gap: 0.5rem;
+	padding: 0.1rem 0;
+}
+
+.lrt--tag-group-label {
+	flex: 0 0 6rem;
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+}
+
+.lrt--tag-group-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+	min-width: 0;
+}
+
+/* One tag in the details. inline-flex + align-items keeps the helper's
+   portrait centred next to the text. */
+.lrt--tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	min-height: 22px;
+	max-width: 100%;
+	padding: 0 0.4rem;
+	border: 1px solid var(--color-border);
+	border-radius: 4px;
+}
+
+.lrt--tag-hindering {
+	border-style: dashed;
+}
+
+.lrt--tag-burned {
+	border-color: var(--lrt-success);
+}
+
+.lrt--tag-burned .fa-fire {
+	color: var(--lrt-success);
+}
+
+.lrt--tag-helper {
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: none;
+}
+
+.lrt--muted {
+	color: var(--color-text-secondary);
+}
+
+.lrt--show-more {
+	display: block;
+	width: auto;
+	margin: 0.5rem auto;
+	padding: 0 1rem;
+}
+
+/* ---------- Manage roll data window ---------- */
+
+.lrt--roll-data-manager .window-content {
+	gap: 0.5rem;
+}
+
+/* One row per hero: checkbox, portrait, name, roll count. */
+.lrt--dm-hero {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.15rem 0;
+}
+
+.lrt--dm-hero img {
+	flex: 0 0 24px;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: none;
+}
+
+/* min-width: 0 lets long names shrink and end in "…". */
+.lrt--dm-hero-name {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.lrt--dm-count {
+	color: var(--color-text-secondary);
+	white-space: nowrap;
+}
+
+.lrt--dm-wipe {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+}
+
+.lrt--dm-wipe button {
+	flex: 0 0 auto;
+	width: auto;
+}
+
+.lrt--no-data-title {
+	font-size: var(--font-size-18);
+	font-weight: bold;
+}
+
+/* The clickable portrait: remove Foundry's default button look so only the
+   round image shows, and highlight it on hover or keyboard focus. */
+.lrt--portrait-button {
+	flex: 0 0 auto;
+	width: auto;
+	height: auto;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: none;
+}
+
+.lrt--portrait-button:hover .lrt--portrait,
+.lrt--portrait-button:focus-visible .lrt--portrait {
+	border-color: var(--color-border-highlight, currentColor);
+	box-shadow: 0 0 6px var(--color-shadow-primary, currentColor);
+}
+
+/* A person next to a tag (templates/person.hbs): small portrait + name.
+   flex-shrink lets the name cut off with "…" when space runs out, and
+   min-width keeps the portrait visible even then. The tag chip next to it
+   shrinks too, so neither pushes the count off the row. */
+.lrt--person {
+	flex: 0 1 auto;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	min-width: 18px;
+	max-width: 40%;
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+}
+
+.lrt--person img {
+	flex: 0 0 18px;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: none;
+}
+
+.lrt--person-name {
+	min-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/* Portrait-only version (Tags tab): the name is still in the tooltip. */
+.lrt--person-compact {
+	flex: 0 0 auto;
+}
+
+.lrt--person-compact .lrt--person-name {
+	display: none;
+}
+
+/* The "→" or "with" between owner and relationship target. */
+.lrt--person-link {
+	flex: 0 0 auto;
+	font-size: var(--font-size-12);
+	color: var(--color-text-secondary);
+}
+
+/* Summary favorite label line: "Power · ◯ owner". */
+.lrt--favorite-head {
+	display: flex;
+	align-items: center;
+	gap: 0.35rem;
+	min-width: 0;
+}
+
+.lrt--favorite-head .lrt--favorite-kind {
+	flex: 0 0 auto;
+}
+
+.lrt--favorite-head .lrt--person {
+	max-width: none;
+}
+
+/* ---------- Session Controls window ---------- */
+
+.lrt--sessions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	text-align: center;
+}
+
+.lrt--sessions p {
+	margin: 0;
+}
+
+/* Long session names end in "…"; the tooltip shows all of it. */
+.lrt--sessions-title {
+	font-size: var(--font-size-16);
+	font-weight: bold;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.lrt--sessions-detail {
+	color: var(--color-text-secondary);
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.lrt--sessions button {
+	margin-top: 0.4rem;
+}
+
+/* A destructive action (End session), in Foundry's error colour. */
+.lrt--button-danger {
+	color: var(--color-level-error);
+	border-color: var(--color-level-error);
+}
+
+/* "Tracking paused" note at the top of the Roll Tracker. */
+.lrt--banner {
+	margin: 0;
+	padding: 0.3rem 0.6rem;
+	border: 1px solid var(--color-level-warning);
+	border-radius: 6px;
+	text-align: center;
+	color: var(--color-level-warning);
+}
+
+/* Manage roll data: Select all row and the Deleted heroes icon. */
+.lrt--dm-select-all {
+	border-bottom: 1px solid var(--color-border);
+	margin-bottom: 0.2rem;
+	font-weight: bold;
+}
+
+.lrt--dm-icon {
+	flex: 0 0 24px;
+	text-align: center;
+	color: var(--color-text-secondary);
+}
+
+.lrt--dm-tracking {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	text-align: center;
+}
+
+.lrt--dm-tracking p {
+	margin: 0;
+}
+
+.lrt--dm-status {
+	font-size: var(--font-size-16);
+	font-weight: bold;
+	color: var(--color-level-success);
+}
+
+.lrt--dm-status-paused {
+	color: var(--color-level-warning);
+}
+
+/* =====================================================================
+   Theme: the look that sits next to litmv2.
+   Every window with the "lrt--themed" class gets these. Rules here come
+   last in the file, so they win over the plain layout rules above.
+
+   Light and dark follow Foundry's own colour scheme setting, the same way
+   litmv2 does: Foundry marks the page with "theme-dark" (or a single window
+   with "theme-light" / "theme-dark"), and we swap our colour values.
+
+   Fonts and tag colours come from litmv2 by NAME (it loads the fonts and
+   sets the colour variables). We never copy its files. Each has a fallback
+   after the comma, used if litmv2 ever stops providing it. Using litmv2's
+   colour variables also picks up its colourblind palette when that's on.
+   ===================================================================== */
+
+/* ---------- Colours and fonts: light (the default) ---------- */
+.lrt--themed {
+	/* Big headers: litmv2's blackletter. Sections: Grenze. Text: Labrada. */
+	--lrt-font-heading: Ysgarth, "Modesto Condensed", Grenze, serif;
+	--lrt-font-section: Grenze, serif;
+	--lrt-font-body: Labrada, Fraunces, "Book Antiqua", Palatino, serif;
+
+	/* Gold accent (active tab, tile edges, histogram) and ruled lines. */
+	--lrt-accent: #8a5f1a;
+	--lrt-rule: #b89d6e;
+
+	/* litmv2's tag highlights: yellow tags, orange weaknesses, green statuses. */
+	--lrt-tag-bg: var(--color-litm-tag, #efd693);
+	--lrt-tag-text: var(--color-litm-tag-text, #553c0c);
+	--lrt-weakness-bg: var(--color-litm-weakness, #edbb89);
+	--lrt-weakness-text: var(--color-litm-weakness-text, #8d4320);
+	--lrt-status-bg: var(--color-litm-status, #bcceb1);
+	--lrt-status-text: var(--color-litm-status-text, #3f5a3f);
+}
+
+/* ---------- Colours: dark ---------- */
+body.theme-dark .lrt--themed:not(.theme-light),
+.lrt--themed.theme-dark {
+	--lrt-accent: #d29641;
+	--lrt-rule: #6b6155;
+
+	--lrt-tag-bg: var(--color-litm-tag, #946a1e);
+	--lrt-tag-text: var(--color-litm-tag-text, #efd693);
+	--lrt-weakness-bg: var(--color-litm-weakness, #9a5028);
+	--lrt-weakness-text: var(--color-litm-weakness-text, #edbb89);
+	--lrt-status-bg: var(--color-litm-status, #4a5e3d);
+	--lrt-status-text: var(--color-litm-status-text, #bcceb1);
+}
+
+/* ---------- Text ---------- */
+.lrt--themed .window-content {
+	font-family: var(--lrt-font-body);
+}
+
+/* Big headers: the hero's name and Session Controls' title. */
+.lrt--themed .lrt--hero-select,
+.lrt--themed .lrt--sessions-title {
+	font-family: var(--lrt-font-heading);
+	font-weight: normal;
+}
+
+.lrt--themed .lrt--hero-select {
+	font-size: var(--font-size-20);
+}
+
+/* Small labels above numbers and lists: small capitals, like a ledger. */
+.lrt--themed :is(.lrt--section-label, .lrt--tile-label, .lrt--favorite-kind, .lrt--card-title, .lrt--tag-group-label) {
+	font-variant: small-caps;
+	letter-spacing: 0.04em;
+	/* Small capitals read smaller than they are, so these are a size up. */
+	font-size: var(--font-size-14);
+}
+
+/* ---------- Headline: big, bold body font with a double rule under it.
+   The body font (not the blackletter) keeps the numbers easy to read. ---------- */
+.lrt--themed .lrt--headline {
+	font-family: var(--lrt-font-body);
+	font-weight: 600;
+	font-size: 1.6rem;
+	line-height: 1.1;
+	padding: 0.2rem 0 0.35rem;
+	border: none;
+	border-bottom: 3px double var(--lrt-rule);
+	border-radius: 0;
+}
+
+.lrt--themed .lrt--headline-count {
+	font-family: var(--lrt-font-body);
+	font-size: var(--font-size-14);
+}
+
+/* ---------- Tabs: Grenze, with a gold line under the open one ---------- */
+.lrt--themed .lrt--tabs {
+	border-bottom: 1px solid var(--lrt-rule);
+}
+
+.lrt--themed .lrt--tabs .item {
+	font-family: var(--lrt-font-section);
+	font-size: var(--font-size-16);
+	border-bottom: 2px solid transparent;
+	text-shadow: none;
+}
+
+.lrt--themed .lrt--tabs .item.active {
+	color: var(--lrt-accent);
+	border-bottom-color: var(--lrt-accent);
+}
+
+/* ---------- Tiles: no box, a gold edge on the left ---------- */
+.lrt--themed .lrt--tile {
+	border: none;
+	border-left: 2px solid var(--lrt-accent);
+	border-radius: 0;
+	padding: 0.2rem 0.6rem;
+}
+
+/* ---------- Cards (favorites, Tags lists, histogram): ruled borders ---------- */
+.lrt--themed :is(.lrt--favorite, .lrt--card, .lrt--histogram) {
+	border-color: var(--lrt-rule);
+}
+
+.lrt--themed .lrt--bar-fill {
+	background: var(--lrt-accent);
+}
+
+/* ---------- Tag and status highlights, as in litmv2 ----------
+   Italic serif text on a slightly slanted colour band. The band is drawn
+   by ::after (a pseudo-element: an extra box CSS adds without any HTML),
+   placed behind the text and tilted with skewX. */
+.lrt--themed .lrt--highlight {
+	--lrt-band: var(--lrt-tag-bg);
+	position: relative;
+	isolation: isolate;
+	border: none;
+	background: none;
+	padding: 0 0.45rem;
+	font-family: var(--lrt-font-body);
+	font-style: italic;
+	font-weight: 500;
+	color: var(--lrt-tag-text);
+}
+
+.lrt--themed .lrt--highlight::after {
+	content: "";
+	position: absolute;
+	inset: 0.1em 0.15em;
+	z-index: -1;
+	background: var(--lrt-band);
+	border-radius: 3px;
+	transform: skewX(-6deg);
+}
+
+.lrt--themed .lrt--highlight-weakness {
+	--lrt-band: var(--lrt-weakness-bg);
+	color: var(--lrt-weakness-text);
+}
+
+.lrt--themed .lrt--highlight-status {
+	--lrt-band: var(--lrt-status-bg);
+	color: var(--lrt-status-text);
+}
+
+/* A tag that hindered: dashed outline around the band. */
+.lrt--themed .lrt--tag-hindering::after {
+	outline: 1px dashed currentColor;
+	outline-offset: 1px;
+}
+
+/* A burned tag: gold outline and flame. */
+.lrt--themed .lrt--tag-burned::after {
+	outline: 1px solid var(--lrt-accent);
+	outline-offset: 1px;
+}
+
+.lrt--themed .lrt--tag-burned .fa-fire {
+	color: var(--lrt-accent);
+}
+
+/* "No data" places stay plain: dashed and muted, no highlight. */
+.lrt--themed .lrt--chip-empty {
+	font-style: italic;
+	border-color: var(--lrt-rule);
+}
+
+/* ---------- Outcome bar: a thin rule around it, so the deep purple
+   still shows on dark backgrounds ---------- */
+.lrt--themed .lrt--outcome-bar,
+.lrt--themed .lrt--swatch {
+	outline: 1px solid var(--lrt-rule);
+}
+
+/* ---------- History ---------- */
+.lrt--themed .lrt--history-row {
+	border-bottom-color: var(--lrt-rule);
+}
+
+.lrt--themed .lrt--history-line {
+	font-family: var(--lrt-font-body);
+}

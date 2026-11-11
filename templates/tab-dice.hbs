@@ -1,0 +1,46 @@
+{{!-- Dice tab. All values come from `dice` (see buildDice). --}}
+<div class="lrt--dice">
+	<div class="lrt--dice-cards">
+		{{!-- Average of the last 10 rolls, with a hot/cold badge, or progress
+		      toward 10 rolls if there aren't enough yet. --}}
+		<div class="lrt--tile lrt--recent">
+			<span class="lrt--tile-label">{{localize "LRT.Dice.recentAverage"}}</span>
+			{{#if dice.recentAverage}}
+				<span class="lrt--tile-value">
+					{{dice.recentAverage}}
+					{{#if dice.streakLabel}}
+						<span class="lrt--badge lrt--badge-{{dice.streak}}">{{localize dice.streakLabel}}</span>
+					{{/if}}
+				</span>
+			{{else}}
+				<span class="lrt--tile-value lrt--tile-muted">{{localize "LRT.Dice.notEnough"}}</span>
+				<span class="lrt--tile-extra">{{dice.progress}}</span>
+			{{/if}}
+		</div>
+		<div class="lrt--tile">
+			<span class="lrt--tile-label">{{localize "LRT.Dice.doubleOnes"}}</span>
+			<span class="lrt--tile-value">{{dice.doubleOnes}}</span>
+		</div>
+		<div class="lrt--tile">
+			<span class="lrt--tile-label">{{localize "LRT.Dice.doubleSixes"}}</span>
+			<span class="lrt--tile-value">{{dice.doubleSixes}}</span>
+		</div>
+	</div>
+
+	{{!-- Histogram: one bar per dice total, 2 to 12. Heights are a share of
+	      the tallest bar, set inline. --}}
+	<div class="lrt--histogram">
+		<span class="lrt--section-label">{{dice.rollCount}}</span>
+		<div class="lrt--bars {{#if dice.smallLabels}}lrt--bars-small{{/if}}">
+			{{#each dice.bars as |bar|}}
+				<div class="lrt--bar" data-tooltip="{{bar.total}}: {{bar.count}}">
+					<span class="lrt--bar-count">{{bar.count}}</span>
+					<span class="lrt--bar-fill" style="height: {{bar.height}}%"></span>
+				</div>
+			{{/each}}
+		</div>
+		<div class="lrt--bar-axis">
+			{{#each dice.bars as |bar|}}<span>{{bar.total}}</span>{{/each}}
+		</div>
+	</div>
+</div>

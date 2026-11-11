@@ -1,0 +1,76 @@
+{{!-- Summary tab. All values come from `summary` (see buildSummary). --}}
+<div class="lrt--summary">
+	{{!-- Four tiles across the top. --}}
+	<div class="lrt--tiles">
+		<div class="lrt--tile">
+			<span class="lrt--tile-label">{{localize "LRT.Summary.rolls"}}</span>
+			<span class="lrt--tile-value">{{summary.rollCount}}</span>
+		</div>
+		<div class="lrt--tile">
+			<span class="lrt--tile-label">{{localize "LRT.Summary.averagePower"}}</span>
+			<span class="lrt--tile-value">{{summary.averagePower}}</span>
+		</div>
+		<div class="lrt--tile">
+			<span class="lrt--tile-label">{{localize "LRT.Summary.averageDice"}}</span>
+			<span class="lrt--tile-value">{{summary.averageDice}}</span>
+		</div>
+		<div class="lrt--tile">
+			<span class="lrt--tile-label">{{localize "LRT.Summary.successStreak"}}</span>
+			<span class="lrt--tile-value">
+				{{summary.streakCurrent}}
+				<span class="lrt--tile-extra">· {{localize "LRT.Summary.longest" count=summary.streakLongest}}</span>
+			</span>
+		</div>
+	</div>
+
+	<div class="lrt--summary-lower">
+		{{!-- Outcome split: one bar made of three segments, then a legend. --}}
+		<div class="lrt--outcomes">
+			<span class="lrt--section-label">{{localize "LRT.Summary.outcomes"}}</span>
+			<div class="lrt--outcome-bar">
+				{{#each summary.outcomes as |entry|}}
+					<span class="lrt--outcome-{{entry.outcome}}" style="flex-grow: {{entry.share}}"></span>
+				{{/each}}
+			</div>
+			{{#each summary.outcomes as |entry|}}
+				<div class="lrt--outcome-row">
+					<span class="lrt--swatch lrt--outcome-{{entry.outcome}}"></span>
+					<span class="lrt--outcome-name">{{localize entry.label}}</span>
+					<strong>{{entry.count}}</strong>
+					<span class="lrt--outcome-percent">{{entry.percent}}%</span>
+				</div>
+			{{/each}}
+		</div>
+
+		{{!-- Favorite tags: one card each for power, weakness, relationship. --}}
+		<div class="lrt--favorites">
+			<span class="lrt--section-label">{{localize "LRT.Summary.favoriteTags"}}</span>
+			{{#each summary.favorites as |favorite|}}
+				<div class="lrt--favorite">
+					{{!-- Label line: "Power", then whose tag it is (All heroes) and,
+					      for relationship tags, who it's with. --}}
+					<div class="lrt--favorite-head">
+						<span class="lrt--favorite-kind">{{localize favorite.label}}</span>
+						{{#if favorite.tag.owner}}
+							{{> "modules/litm-roll-tracker/templates/person.hbs" favorite.tag.owner}}
+						{{/if}}
+						{{#if favorite.tag.target}}
+							<span class="lrt--person-link">{{#if favorite.tag.owner}}→{{else}}{{localize "LRT.Tags.withWord"}}{{/if}}</span>
+							{{> "modules/litm-roll-tracker/templates/person.hbs" favorite.tag.target}}
+						{{/if}}
+					</div>
+					{{#if favorite.tag}}
+						<div class="lrt--favorite-row">
+							<span class="lrt--chip lrt--highlight lrt--highlight-{{favorite.kind}}" data-tooltip="{{favorite.tag.name}}">{{favorite.tag.name}}</span>
+							<span class="lrt--count">{{favorite.tag.count}}</span>
+						</div>
+					{{else}}
+						<div class="lrt--favorite-row">
+							<span class="lrt--chip lrt--chip-empty">{{localize "LRT.Window.noData"}}</span>
+						</div>
+					{{/if}}
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</div>

@@ -1,0 +1,46 @@
+{{!-- Everything below the header: the headline and the four tabs, or the
+      "No data" screen when the selection has no rolls. --}}
+<section class="lrt--body">
+	{{!-- Shown to everyone while the GM has paused tracking. --}}
+	{{#if trackingPaused}}
+		<p class="lrt--banner" role="status">
+			<i class="fa-solid fa-circle-pause" aria-hidden="true"></i> {{localize "LRT.Window.trackingPaused"}}
+		</p>
+	{{/if}}
+	{{#if hasRolls}}
+		<p class="lrt--headline">
+			{{headline.percent}} <span class="lrt--headline-count">· {{headline.count}}</span>
+		</p>
+
+		{{!-- The tab bar. data-action="tab" tells Foundry these links switch tabs;
+		      data-group and data-tab say which group and which tab. --}}
+		<nav class="tabs lrt--tabs" data-group="primary">
+			{{#each tabs as |tab|}}
+				<a class="item {{tab.cssClass}}" data-action="tab" data-group="primary" data-tab="{{tab.id}}">
+					{{localize tab.label}}
+				</a>
+			{{/each}}
+		</nav>
+
+		{{!-- One panel per tab. Foundry shows the panel whose data-tab matches the
+		      open tab. {{> "path"}} draws another template (a "partial") right
+		      here, with the same data. --}}
+		<section class="tab lrt--tab {{tabs.summary.cssClass}}" data-group="primary" data-tab="summary">
+			{{> "modules/litm-roll-tracker/templates/tab-summary.hbs"}}
+		</section>
+		<section class="tab lrt--tab {{tabs.tags.cssClass}}" data-group="primary" data-tab="tags">
+			{{> "modules/litm-roll-tracker/templates/tab-tags.hbs"}}
+		</section>
+		<section class="tab lrt--tab {{tabs.dice.cssClass}}" data-group="primary" data-tab="dice">
+			{{> "modules/litm-roll-tracker/templates/tab-dice.hbs"}}
+		</section>
+		<section class="tab lrt--tab {{tabs.history.cssClass}}" data-group="primary" data-tab="history">
+			{{> "modules/litm-roll-tracker/templates/tab-history.hbs"}}
+		</section>
+	{{else}}
+		<div class="lrt--no-data">
+			<p class="lrt--no-data-title">{{localize "LRT.Window.noData"}}</p>
+			<p>{{localize "LRT.Window.noDataHint"}}</p>
+		</div>
+	{{/if}}
+</section>

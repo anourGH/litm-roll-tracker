@@ -1,0 +1,37 @@
+{{!-- Reset data tab: delete the rolls of the ticked heroes. --}}
+<section class="tab lrt--dm-tab {{tab.cssClass}}" data-group="primary" data-tab="reset">
+	<p class="hint">{{localize "LRT.DataManager.reset.intro"}}</p>
+
+	<fieldset class="lrt--dm-reset">
+		<legend>{{localize "LRT.DataManager.fake.heroes"}}</legend>
+		{{!-- Ticks every box below (see _onRender). --}}
+		<label class="lrt--dm-hero lrt--dm-select-all">
+			<input type="checkbox" name="selectAll">
+			<span class="lrt--dm-hero-name">{{localize "LRT.DataManager.reset.selectAll"}}</span>
+		</label>
+		{{#each heroes as |hero|}}
+			{{!-- name="reset.<id>" groups these checkboxes under "reset". --}}
+			<label class="lrt--dm-hero">
+				<input type="checkbox" name="reset.{{hero.id}}">
+				<img src="{{hero.img}}" alt="">
+				<span class="lrt--dm-hero-name" data-tooltip="{{hero.name}}">{{hero.name}}</span>
+				<span class="lrt--dm-count">{{localize "LRT.DataManager.rollCount" count=hero.rollCount}}</span>
+			</label>
+		{{/each}}
+		{{#if deletedHeroes}}
+			<label class="lrt--dm-hero">
+				<input type="checkbox" name="deletedHeroes">
+				<i class="fa-solid fa-user-slash lrt--dm-icon" aria-hidden="true"></i>
+				<span class="lrt--dm-hero-name">{{localize "LRT.DataManager.reset.deletedHeroes"}}</span>
+				<span class="lrt--dm-count">{{localize "LRT.DataManager.rollCount" count=deletedHeroes.rollCount}}</span>
+			</label>
+		{{/if}}
+	</fieldset>
+
+	<p class="hint">{{localize "LRT.DataManager.reset.keepsSessions"}}</p>
+
+	{{!-- A submit button: runs the window's form handler, which resets. --}}
+	<button type="submit" class="lrt--button-danger">
+		<i class="fa-solid fa-trash-can" aria-hidden="true"></i> {{localize "LRT.DataManager.reset.button"}}
+	</button>
+</section>

@@ -1,0 +1,37 @@
+{{!-- Fake data tab: generate sample rolls for testing, or wipe them. --}}
+<section class="tab lrt--dm-tab {{tab.cssClass}}" data-group="primary" data-tab="fake">
+	<p class="hint">{{localize "LRT.DataManager.fake.intro"}}</p>
+
+	<fieldset>
+		<legend>{{localize "LRT.DataManager.fake.heroes"}}</legend>
+		{{#each heroes as |hero|}}
+			{{!-- name="heroes.<id>" groups every checkbox under "heroes". --}}
+			<label class="lrt--dm-hero">
+				<input type="checkbox" name="heroes.{{hero.id}}">
+				<img src="{{hero.img}}" alt="">
+				<span class="lrt--dm-hero-name" data-tooltip="{{hero.name}}">{{hero.name}}</span>
+				<span class="lrt--dm-count">{{localize "LRT.DataManager.rollCount" count=hero.rollCount}}</span>
+			</label>
+		{{else}}
+			<p>{{localize "LRT.DataManager.noHeroes"}}</p>
+		{{/each}}
+	</fieldset>
+
+	<div class="form-group">
+		<label for="lrt-rolls-per-hero">{{localize "LRT.DataManager.fake.rollsPerHero"}}</label>
+		<input id="lrt-rolls-per-hero" type="number" name="rollsPerHero" value="50" min="1" max="{{maxRolls}}" step="1">
+	</div>
+
+	{{!-- A submit button: pressing it runs the window's form handler. --}}
+	<button type="submit"><i class="fa-solid fa-dice" aria-hidden="true"></i> {{localize "LRT.DataManager.fake.generate"}}</button>
+
+	<hr>
+
+	<div class="lrt--dm-wipe">
+		<span>{{localize "LRT.DataManager.fake.existing" count=fakeCount}}</span>
+		{{!-- type="button" so it doesn't submit the form; data-action runs #onWipe. --}}
+		<button type="button" data-action="wipe" {{disabled (not hasFakeRolls)}}>
+			<i class="fa-solid fa-trash" aria-hidden="true"></i> {{localize "LRT.DataManager.fake.wipe"}}
+		</button>
+	</div>
+</section>

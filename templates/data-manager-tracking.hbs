@@ -1,0 +1,23 @@
+{{!-- Tracking tab: shows whether rolls are being recorded, with a button to
+      pause or resume. --}}
+<section class="tab lrt--dm-tab {{tab.cssClass}}" data-group="primary" data-tab="tracking">
+	<div class="lrt--dm-tracking">
+		{{#if paused}}
+			<p class="lrt--dm-status lrt--dm-status-paused">
+				<i class="fa-solid fa-circle-pause" aria-hidden="true"></i> {{localize "LRT.DataManager.tracking.paused"}}
+			</p>
+			<p class="hint">{{localize "LRT.DataManager.tracking.pausedHint"}}</p>
+			<button type="button" data-action="toggleTracking">
+				<i class="fa-solid fa-play" aria-hidden="true"></i> {{localize "LRT.DataManager.tracking.resume"}}
+			</button>
+		{{else}}
+			<p class="lrt--dm-status">
+				<i class="fa-solid fa-circle-dot" aria-hidden="true"></i> {{localize "LRT.DataManager.tracking.active"}}
+			</p>
+			<p class="hint">{{localize "LRT.DataManager.tracking.activeHint"}}</p>
+			<button type="button" data-action="toggleTracking">
+				<i class="fa-solid fa-pause" aria-hidden="true"></i> {{localize "LRT.DataManager.tracking.pause"}}
+			</button>
+		{{/if}}
+	</div>
+</section>
