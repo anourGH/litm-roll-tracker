@@ -42,7 +42,7 @@ Then enable **Legend in the Mist: Roll Tracker** in your world's module settings
 
 Turn on **Developer mode** in the module settings to add a Fake data tab to **Manage roll data**. It generates sample rolls from your heroes' real tags, and can remove them again.
 
-### AI Disclosure
+## AI Disclosure
 
 Claude Code was used as a coding assistant throughout the development of this module to draft code and suggest interface text. All included code and text was reviewed and tested by me directly before release. This module contains no AI-generated art or media.
 
