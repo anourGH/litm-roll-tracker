@@ -38,19 +38,13 @@ https://github.com/anourGH/litm-roll-tracker/releases/latest/download/module.jso
 
 Then enable **Legend in the Mist: Roll Tracker** in your world's module settings.
 
-### For development
-
-Put this folder (or a link to it) in your Foundry data folder as `Data/modules/litm-roll-tracker`. On Windows, a junction keeps Foundry pointed at your working copy:
-
-```powershell
-New-Item -ItemType Junction -Path "<Foundry data>\Data\modules\litm-roll-tracker" -Target "<path to this repo>"
-```
-
-New versions are published by creating a GitHub Release with a tag like `v1.0.1`; a GitHub Action builds `module.zip` and attaches it with `module.json`.
-
 ### For testing
 
 Turn on **Developer mode** in the module settings to add a Fake data tab to **Manage roll data**. It generates sample rolls from your heroes' real tags, and can remove them again.
+
+### AI Disclosure
+
+Claude Code was used as a coding assistant throughout the development of this module to draft code and suggest interface text. All included code and text was reviewed and tested by me directly before release. This module contains no AI-generated art or media.
 
 ## License
 
