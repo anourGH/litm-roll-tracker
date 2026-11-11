@@ -2,6 +2,8 @@
 
 A Foundry VTT module for the [Legend in the Mist](https://github.com/Son-of-Oak-Community/litmv2) system (`litmv2`). It records every roll your heroes make and shows statistics for each hero: outcomes, Power, dice luck, favorite tags, and a full roll history.
 
+![The Roll Tracker window on the Summary tab: a hero's success rate, roll count, average Power and dice, success streak, outcome split and favorite tags](docs/summary-tab.png)
+
 ## Features
 
 - **Tracks every roll** for the hero it belongs to, in every roll mode, including Acting Together (counted for each hero taking part) and Helping Each Other (contributed tags count for the hero who owns them).
