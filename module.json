@@ -2,7 +2,7 @@
 	"id": "litm-roll-tracker",
 	"title": "Legend in the Mist: Roll Tracker",
 	"description": "Tracks rolls made in Legend in the Mist and shows statistics for each hero.",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"compatibility": {
 		"minimum": "14",
 		"verified": "14.365"
@@ -36,6 +36,8 @@
 	],
 	"socket": true,
 	"url": "https://github.com/anourGH/litm-roll-tracker",
+	"manifest": "https://github.com/anourGH/litm-roll-tracker/releases/latest/download/module.json",
+	"download": "https://github.com/anourGH/litm-roll-tracker/releases/download/v1.0.0/module.zip",
 	"license": "LICENSE",
 	"readme": "README.md"
 }

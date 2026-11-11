@@ -28,13 +28,23 @@ A Foundry VTT module for the [Legend in the Mist](https://github.com/Son-of-Oak-
 
 ## Installing
 
-There's no release yet. To try it out, put this folder (or a link to it) in your Foundry data folder as `Data/modules/litm-roll-tracker`, then enable **Legend in the Mist: Roll Tracker** in your world's module settings.
+In Foundry's setup screen, go to **Add-on Modules → Install Module**, paste this manifest URL into the **Manifest URL** field, and press **Install**:
 
-On Windows, a junction keeps Foundry pointed at your working copy:
+```
+https://github.com/anourGH/litm-roll-tracker/releases/latest/download/module.json
+```
+
+Then enable **Legend in the Mist: Roll Tracker** in your world's module settings.
+
+### For development
+
+Put this folder (or a link to it) in your Foundry data folder as `Data/modules/litm-roll-tracker`. On Windows, a junction keeps Foundry pointed at your working copy:
 
 ```powershell
 New-Item -ItemType Junction -Path "<Foundry data>\Data\modules\litm-roll-tracker" -Target "<path to this repo>"
 ```
+
+New versions are published by creating a GitHub Release with a tag like `v1.0.1`; a GitHub Action builds `module.zip` and attaches it with `module.json`.
 
 ### For testing
 
